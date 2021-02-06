@@ -12,7 +12,8 @@ class HumanPlayer
         numbers = ('0'..'9').to_a
         
         inp = gets.chomp.split
-        raise "invalid input" if inp.length != 2 || inp.any? {|num| !numbers.include?(num)}
+        raise "invalid input" if inp.length != 2 ||
+                                 inp.any? {|str| str.split("").any? {|ch| !numbers.include?(ch)}}
         
         inp.map(&:to_i)
     end
