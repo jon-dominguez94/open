@@ -41,27 +41,38 @@ class List
     end
 
     def print
-        puts '---------------------------------------'
-        puts '               ' + @label.upcase + '               '
-        puts '---------------------------------------'
-        puts 'Index | Item              | Deadline   '
-        puts '---------------------------------------'
+        puts '-----------------------------------------------'
+        puts '                   ' + @label.upcase + '                   '
+        puts '-----------------------------------------------'
+        puts 'Index | Item              | Deadline   | Done  '
+        puts '-----------------------------------------------'
         @items.each_with_index do |item, i|
             count = 18 - item.title.length
-            puts i.to_s + '     | ' + item.title + (" " * count) + "| " + item.deadline
-            # puts output
+            status = item.done ? '[ X ]' : '[ ]'
+            puts i.to_s + 
+            '     | ' + 
+            item.title + 
+            (" " * count) + 
+            "| " + 
+            item.deadline +
+            ' | ' +
+            status
         end
-        puts '---------------------------------------'
+        puts '-----------------------------------------------'
     end
     
     def print_full_item(index)
         return if !self.valid_index?(index)
-        puts '---------------------------------------'
+        puts '--------------------------------------------'
         item = @items[index]
-        count = 29 - item.title.length
-        puts item.title + (" " * count) + item.deadline
+        count = 24 - item.title.length
+        puts item.title + 
+             (" " * count) + 
+             item.deadline + 
+             '     ' + 
+             (item.done ? "[ X ]" : "[   ]")
         puts item.description
-        puts '---------------------------------------'
+        puts '--------------------------------------------'
     end
 
     def print_priority
@@ -90,5 +101,19 @@ class List
 
     def sort_by_date!
         @items.sort_by!{|item| item.deadline}
+    end
+
+    def toggle_item(index)
+        self.valid_index?(index) ? @items[index].toggle : false
+    end
+
+    def remove_item(index)
+        return false if !self.valid_index?(index)
+        @items.delete_at(index)
+        true
+    end
+
+    def purge
+        @items.reject! {|item| item.done}
     end
 end

@@ -1,5 +1,6 @@
 class Item
     attr_accessor :title, :deadline, :description
+    attr_reader :done
 
     def self.valid_date?(date_str)
         pieces = date_str.split('-')
@@ -18,6 +19,7 @@ class Item
         @title = title
         @deadline = deadline
         @description = description
+        @done = false
         raise "Invalid date!" if !self.class.valid_date?(@deadline)
     end
 
@@ -26,6 +28,9 @@ class Item
         @deadline = date
     end
 
+    def toggle
+        @done = !@done
+    end
 end
 
 def all_nums(str)
