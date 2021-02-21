@@ -9,17 +9,18 @@ class Game
         @players = players
         @fragment = ""
         @dictionary = Set.new
+        self.populate_dictionary
         @current_player_index = 0
         @current_player = @players[@current_player_index]
         @previous_player = nil
         @losses = Hash.new(0)
     end
 
-    def populate_dictionary(filename)
+    def populate_dictionary
         # file = File.open("words.txt")
         # file.readlines.each {|line| @dictionary.add(line.chomp)}
         # file.close
-        File.foreach(filename) {|line| @dictionary.add(line.chomp)}
+        File.foreach('words.txt') {|line| @dictionary.add(line.chomp)}
     end
 
     def switch_player
@@ -99,4 +100,13 @@ class Game
         puts @current_player.name + " wins the game!"
     end
 
+end
+
+if __FILE__ == $PROGRAM_NAME
+    g = Game.new(
+        Player.new("charlee"),
+        Player.new("Jon"),
+        Player.new("Avery"),
+    )
+    g.run
 end
