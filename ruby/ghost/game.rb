@@ -3,16 +3,15 @@ require_relative './player.rb'
 
 class Game
 
-    attr_reader :fragment
+    attr_reader :fragment, :losses
 
-    def initialize(player1, player2)
-        # @players = players
-        @player1 = player1
-        @player2 = player2
+    def initialize(*players)
+        @players = players
         @fragment = ""
         @dictionary = Set.new
-        @current_player = @player1
-        @previous_player = @player2
+        @current_player_index = 0
+        @current_player = @players[@current_player_index]
+        @previous_player = nil
         @losses = Hash.new(0)
     end
 
@@ -24,7 +23,8 @@ class Game
     end
 
     def switch_player
-        @current_player, @previous_player = @previous_player, @current_player
+        @current_player_index = (@current_player_index + 1) % @players.length
+        @current_player, @previous_player = @players[@current_player_index], @current_player
         nil
     end
 
@@ -40,7 +40,8 @@ class Game
     end
 
     def game_over? 
-        @losses.values.any? {|total| total == 5}
+        @players.length <= 1
+        # @losses.values.any? {|total| total == 5}
     end
 
     def translate_losses(count)
@@ -48,8 +49,9 @@ class Game
     end
     
     def print_scores
-        puts @player1.name + ": " + self.translate_losses(@losses[@player1])
-        puts @player2.name + ": " + self.translate_losses(@losses[@player2])
+        @players.each do |player|
+            puts player.name + ": " + self.translate_losses(@losses[player])
+        end
     end
     
     def print_scoreboard
@@ -73,12 +75,25 @@ class Game
         puts "Fragment: " + @fragment
         @fragment = ""
     end
+
+    def check_eliminations
+        @losses.reject! do |k,v|
+            condition = v >= 5
+            if condition
+                puts k.name + " is eliminated!"
+                @players.delete(k)
+            end
+            condition
+        end
+        nil
+    end
     
     def run
         until self.game_over?
             self.print_scoreboard
             self.play_round until self.lose?
             self.reset_game
+            self.check_eliminations
         end
 
         puts @current_player.name + " wins the game!"
