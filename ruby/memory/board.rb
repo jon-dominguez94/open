@@ -14,16 +14,53 @@ class Board
         length = @grid.length
         (0...length).each do |i|
             (0...length).each do |j|
-                @grid[i][j] = values.pop
+                pos = [i,j]
+                self[pos] = Card.new(values.pop)
             end
         end
         nil
     end
 
+    def reveal(pos)
+        card = self[pos]
+        card.reveal
+    end
+
+    def render
+        @grid.each do |row| 
+            vals = row.map do |card|
+                # card.revealed ? card.value : '_'
+                card.value
+            end
+            puts vals.join(" | ")
+        end
+        nil
+    end
+
+    def won?
+        @grid.all? do |row|
+            row.all? do |card|
+                card.revealed
+            end
+        end
+    end
+
+    protected
     def get_values
         alpha = ('A'..'Z').to_a
         amount_needed = @size**2 / 2
         (alpha.sample(amount_needed) * 2).shuffle
+    end
+
+    def [](pos)
+        row, col = pos
+        @grid[row][col]
+    end
+
+    def []=(pos, value)
+        row, col = pos
+        @grid[row][col] = value
+        value
     end
 
 end
