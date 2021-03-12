@@ -2,6 +2,8 @@ require_relative "card.rb"
 
 class Board
 
+    attr_reader :size
+
     def initialize(size=4)
         @grid = Array.new(size) {Array.new(size)}
         @size = size
@@ -43,6 +45,7 @@ class Board
     end
 
     protected
+    
     def get_values
         alpha = ('A'..'Z').to_a
         amount_needed = @size**2 / 2
