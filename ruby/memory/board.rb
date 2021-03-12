@@ -2,8 +2,6 @@ require_relative "card.rb"
 
 class Board
 
-    attr_reader :grid
-
     def initialize(size=4)
         @grid = Array.new(size) {Array.new(size)}
         @size = size
@@ -29,7 +27,6 @@ class Board
     def render
         @grid.each do |row| 
             vals = row.map do |card|
-                # card.revealed ? card.value : '_'
                 card.value
             end
             puts vals.join(" | ")
@@ -64,6 +61,3 @@ class Board
     end
 
 end
-
-b = Board.new
-b.populate
