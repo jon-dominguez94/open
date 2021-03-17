@@ -44,17 +44,21 @@ class Board
         end
     end
 
+    def hidden?(pos)
+        !self[pos].revealed
+    end
+
+    def [](pos)
+        row, col = pos
+        @grid[row][col]
+    end
+
     protected
     
     def get_values
         alpha = ('A'..'Z').to_a
         amount_needed = @size**2 / 2
         (alpha.sample(amount_needed) * 2).shuffle
-    end
-
-    def [](pos)
-        row, col = pos
-        @grid[row][col]
     end
 
     def []=(pos, value)

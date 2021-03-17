@@ -24,4 +24,8 @@ class Card
         @value == card.value
     end
 
+    def !=(card)
+        @value != card.value
+    end
+
 end
