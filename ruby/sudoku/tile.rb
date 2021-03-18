@@ -1,8 +1,8 @@
 class Tile
 
-    def initialize(value=nil)
+    def initialize(value)
         @value = value
-        @given = !value.nil?
+        @given = value != 0
     end
     
 end
