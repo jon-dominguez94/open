@@ -16,7 +16,7 @@ class Tile
     def render
         color = (@value == 0 ? :red : :blue)
         color = :green if @given
-        puts @value.to_s.colorize(color)
+        @value.to_s.colorize(color)
     end
     
 end
