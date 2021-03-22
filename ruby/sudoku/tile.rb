@@ -1,16 +1,12 @@
 require 'colorize'
 
 class Tile
-    attr_reader :given, :value
+    attr_accessor :value
+    attr_reader :given
 
     def initialize(value)
         @value = value
         @given = value != 0
-    end
-
-    def value=(num)
-        raise 'Cannot change given values' if @given
-        @value = num
     end
 
     def render
