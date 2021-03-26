@@ -21,6 +21,12 @@ class Board
         nil
     end
 
+    def [](pos)
+        row, col = pos
+        tile = @grid[row][col]
+        tile
+    end
+
     def []=(pos, val)
         row, col = pos
         tile = @grid[row][col]
@@ -31,27 +37,6 @@ class Board
         self.all_rows?(@grid) && 
         self.all_columns?
         self.all_squares?
-    end
-
-    def all_squares?
-        squares = self.get_squares
-        squares.all? {|tiles| self.solved?(tiles)}
-    end
-
-    def get_squares
-        corners = self.get_corners
-        corners.map! {|corner| self.get_block(corner)}
-    end
-
-    def get_corners
-        corners = []
-        points = [0, 3, 6]
-        points.each do |i|
-            points.each do |j|
-                corners << [i,j]
-            end
-        end
-        corners
     end
 
     protected
@@ -71,6 +56,38 @@ class Board
         self.all_rows?(@grid.transpose)
     end
 
+    def all_squares?
+        squares = self.get_squares
+        squares.map! {|square| square.map {|pos| self[pos]}}
+        squares.all? {|tiles| self.solved?(tiles)}
+    end
+
+    def get_squares
+        corners = self.get_corners
+        corners.map {|corner| self.get_block(corner)}
+    end
+
+    def get_block(corner)
+        i, j = corner
+        positions = []
+        (i...i+3).each do |row|
+            (j...j+3).each do |col|
+                positions << [row, col]
+            end
+        end
+        positions
+    end
+
+    def get_corners
+        corners = []
+        points = [0, 3, 6]
+        points.each do |i|
+            points.each do |j|
+                corners << [i,j]
+            end
+        end
+        corners
+    end
 
 end
 
