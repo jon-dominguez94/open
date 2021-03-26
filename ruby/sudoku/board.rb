@@ -28,8 +28,30 @@ class Board
     end
 
     def won?
-        self.all_rows?(@grid) 
-        # && self.all_columns? && self.all_squares?
+        self.all_rows?(@grid) && 
+        self.all_columns?
+        self.all_squares?
+    end
+
+    def all_squares?
+        squares = self.get_squares
+        squares.all? {|tiles| self.solved?(tiles)}
+    end
+
+    def get_squares
+        corners = self.get_corners
+        corners.map! {|corner| self.get_block(corner)}
+    end
+
+    def get_corners
+        corners = []
+        points = [0, 3, 6]
+        points.each do |i|
+            points.each do |j|
+                corners << [i,j]
+            end
+        end
+        corners
     end
 
     protected
@@ -38,12 +60,18 @@ class Board
     end
 
     def all_rows?(grid)
-        grid.all? {|row| self.row_solved?(row)}
+        grid.all? {|row| self.solved?(row)}
     end
 
-    def row_solved?(row)
-        row.map {|el| el.value}.sort == (1..9).to_a
+    def solved?(tiles)
+        tiles.map {|el| el.value}.sort == (1..9).to_a
     end
+
+    def all_columns?
+        self.all_rows?(@grid.transpose)
+    end
+
+
 end
 
 # raise 'Cannot change given values' if @given
