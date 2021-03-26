@@ -35,7 +35,7 @@ class Board
 
     def won?
         self.all_rows?(@grid) && 
-        self.all_columns?
+        self.all_columns? &&
         self.all_squares?
     end
 
