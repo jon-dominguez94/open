@@ -14,6 +14,7 @@ class Game
             @board[pos] = val
         end
         puts "Board Solved!"
+        @board.render
     end
 
     protected
@@ -63,4 +64,15 @@ class Game
         pos
     end
 
+end
+
+if __FILE__ == $PROGRAM_NAME
+    choice = nil
+    until ['1','2','3'].include?(choice)
+        puts "Puzzle 1, 2, or 3?"
+        choice = gets.chomp
+    end
+    puzzle = 'puzzles/sudoku' + choice + '.txt'
+    g = Game.new(puzzle)
+    g.play
 end
