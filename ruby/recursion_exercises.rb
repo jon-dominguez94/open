@@ -89,3 +89,46 @@ arr = [1,[2,3], 4]
 p deep_dup(arr) # [1,[2,3], 4]
 arr = [1,[2,3], [4,[5,[6]], 7]]
 p deep_dup(arr) # [1,[2,3], [4,[5,[6]], 7]]
+
+
+
+def fibonacci(n)
+    return [] if n <= 0
+    return [1] if n == 1
+    return [1,1] if n == 2
+    last = fibonacci(n-1)
+    last + [last[-2] + last[-1]]
+end
+
+
+puts "-------FIBONACCI-------"
+p fibonacci(-1) # []
+p fibonacci(0) # []
+p fibonacci(1) # [1]
+p fibonacci(6) # [1,1,2,3,5,8]
+
+
+
+def binary_search(arr, target)
+    return nil if arr.empty?
+    mid = arr.length / 2
+    return mid if target == arr[mid]
+    left = arr[0...mid]
+    right = arr[mid+1..-1]
+    rval = binary_search(right, target)
+    if rval
+        mid + 1 + rval
+    else 
+        binary_search(left, target)
+    end
+end
+
+puts "-------BINARY_SEARCH-------"
+p binary_search([1, 2, 3], 1) # => 0
+p binary_search([2, 3, 4, 5], 3) # => 1
+p binary_search([2, 3, 4, 5, 6, 7, 8, 9, 10], 5) # => 3
+p binary_search([2, 4, 6, 8, 10], 6) # => 2
+p binary_search([1, 3, 4, 5, 9], 5) # => 3
+p binary_search([1, 2, 3, 4, 5, 6], 6) # => 5
+p binary_search([1, 2, 3, 4, 5, 6], 0) # => nil
+p binary_search([1, 2, 3, 4, 5, 7], 6) # => nil
